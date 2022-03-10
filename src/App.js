@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import {useState, useEffect} from "react";
 import { toast, ToastContainer } from "react-toastify";
 import Searchbar from "./components/Searchbar/Searchbar";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
@@ -8,17 +8,22 @@ import getAPI from "./services/API";
 import style from "./App.css";
 import "react-toastify/dist/ReactToastify.css";
 
-class App extends Component {
-  state = {
-    imageName: "",
-    images: [],
-    loading: false,
-    page: 1,
-  };
+export default function App ({}) {
+    const [imageName, setImageName] = useState("");
+    const [images, setImages] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [page, setPage] = useState(1);
 
-  searchImages = () => {
-    const { imageName, page } = this.state;
-    this.setState({ loading: true });
+//   state = {
+//     imageName: "",
+//     images: [],
+//     loading: false,
+//     page: 1,
+//   };
+
+  const searchImages = () => {
+      console.log('ky');
+    setLoading(true);
 
     getAPI(imageName, page).then((res) => {
       const images = res.data.hits.map(
@@ -32,52 +37,50 @@ class App extends Component {
         return toast.error("There is no picture with that name!");
       }
 
-      this.setState((prevState) => ({
-        images: [...prevState.images, ...images],
-      }));
-      this.setState({ loading: false });
+      setImages((newImages) => [...newImages, ...images]);
+      setLoading(false);
     });
   };
 
-  componentDidUpdate(prewProps, prevState) {
-    if (prevState.imageName !== this.state.imageName) {
-      this.setState({ images: [], page: 1 });
-      this.searchImages();
-    }
 
-    if (prevState.page !== this.state.page && this.state.page !== 1) {
-      this.searchImages();
-    }
-  }
+  useEffect(() => {
+    setImages([]);
+    setPage(1);
+    searchImages()
+  }, [imageName, page]);
+//   componentDidUpdate(prewProps, prevState) {
+//     if (prevState.imageName !== this.state.imageName) {
+//       this.setState({ images: [], page: 1 });
+//       this.searchImages();
+//     }
 
-  handleFormSubmit = (imageName) => {
-    this.setState({ imageName });
+    // if (prevState.page !== this.state.page && this.state.page !== 1) {
+    //   this.searchImages();
+    // }
+  
+  const handleFormSubmit = (imageName) => {
+    setImageName(imageName);
   };
 
-  loadMoreBtn = () => {
-    this.setState((prevState) => ({
-      page: prevState.page + 1,
-    }));
-  };
+  const loadMoreBtn = () => {
+    setPage((page) => page + 1)
 
-  render() {
-    const { images, loading } = this.state;
-    const { handleFormSubmit, loadMoreBtn } = this;
+    // this.setState((prevState) => ({
+    //   page: prevState.page + 1,
+    // }))
+    }
 
     return (
-      <div className={style.App}>
-        <Searchbar onSubmit={handleFormSubmit} />
-        {images.length > 0 && <ImageGallery images={images} />}
-        {loading ? (
-          <Loader />
-        ) : (
-          images.length > 0 &&
-          images.length % 12 === 0 && <Button more={loadMoreBtn} />
-        )}
-        <ToastContainer autoClose={2000} />
-      </div>
-    );
+        <div className={style.App}>
+          <Searchbar onSubmit={handleFormSubmit} />
+          {images.length > 0 && <ImageGallery images={images} />}
+          {loading ? (
+            <Loader />
+          ) : (
+            images.length > 0 &&
+            images.length % 12 === 0 && <Button more={loadMoreBtn} />
+          )}
+          <ToastContainer autoClose={2000} />
+        </div>
+      );
   }
-}
-
-export default App;
