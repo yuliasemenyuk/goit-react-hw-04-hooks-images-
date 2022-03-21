@@ -5,22 +5,22 @@ import { ImSearch } from "react-icons/im";
 import { toast } from "react-toastify";
 
 export default function Searchbar({onSubmit}) {
-    const [imageName, setImageName] = useState('');
+    const [imageName, setImageName] = useState("");
 
     const handleNameChange = e => {
         setImageName(e.target.value.toLowerCase());
     };
 
     const handleSubmit = (e) => {
-            e.preventDefault();
+      e.preventDefault();
         
-            if (imageName.trim() === "") {
-              toast.error("Search field can`t be empty!");
-              return;
-            }
+      if (imageName.trim() === "") {
+          toast.error("Search field can`t be empty!");
+            return;
+          }
         
-            onSubmit(imageName);
-            setImageName('');
+          onSubmit(imageName);
+          setImageName("");
     };
         
 
@@ -44,7 +44,6 @@ export default function Searchbar({onSubmit}) {
       </header>
     )
 }
-
 
 Searchbar.propTypes = {
   onSubmit: propTypes.func.isRequired,

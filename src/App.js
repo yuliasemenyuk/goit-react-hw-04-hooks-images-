@@ -8,66 +8,45 @@ import getAPI from "./services/API";
 import style from "./App.css";
 import "react-toastify/dist/ReactToastify.css";
 
-export default function App ({}) {
+export default function App () {
     const [imageName, setImageName] = useState("");
     const [images, setImages] = useState([]);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
 
-//   state = {
-//     imageName: "",
-//     images: [],
-//     loading: false,
-//     page: 1,
-//   };
 
-  const searchImages = () => {
-      console.log('ky');
+  useEffect(() => {
+    if (imageName === "") {
+      return
+    }
     setLoading(true);
 
     getAPI(imageName, page).then((res) => {
-      const images = res.data.hits.map(
+      const NewImages = res.data.hits.map(
         ({ id, tags, webformatURL, largeImageURL }) => {
           return { id, tags, webformatURL, largeImageURL };
         }
       );
 
-      if (images.length === 0) {
-        this.setState({ loading: false });
+      if (NewImages.length === 0) {
+        setLoading(false);
         return toast.error("There is no picture with that name!");
       }
 
-      setImages((newImages) => [...newImages, ...images]);
+      setImages((prevImages) => [...prevImages, ...NewImages]);
+      console.log(images);
       setLoading(false);
-    });
-  };
+    })
+  }, [page, imageName]);
 
-
-  useEffect(() => {
-    setImages([]);
-    setPage(1);
-    searchImages()
-  }, [imageName, page]);
-//   componentDidUpdate(prewProps, prevState) {
-//     if (prevState.imageName !== this.state.imageName) {
-//       this.setState({ images: [], page: 1 });
-//       this.searchImages();
-//     }
-
-    // if (prevState.page !== this.state.page && this.state.page !== 1) {
-    //   this.searchImages();
-    // }
-  
   const handleFormSubmit = (imageName) => {
     setImageName(imageName);
+    setPage(1);
+    setImages([]);
   };
 
   const loadMoreBtn = () => {
     setPage((page) => page + 1)
-
-    // this.setState((prevState) => ({
-    //   page: prevState.page + 1,
-    // }))
     }
 
     return (
