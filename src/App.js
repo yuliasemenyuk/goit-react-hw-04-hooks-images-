@@ -14,7 +14,6 @@ export default function App () {
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
 
-
   useEffect(() => {
     if (imageName === "") {
       return

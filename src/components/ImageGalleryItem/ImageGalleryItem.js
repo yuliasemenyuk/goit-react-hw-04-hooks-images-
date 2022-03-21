@@ -1,5 +1,5 @@
 import {useState} from "react";
-import propTypes from "prop-types";
+import PropTypes from "prop-types";
 import Modal from "../Modal/Modal";
 import style from "./ImageGalleryItem.module.css";
 
@@ -31,8 +31,7 @@ export default function ImageGalleryItem ({webformatURL, tags, largeImageURL}) {
   }
 
 ImageGalleryItem.propTypes = {
-  toggleModal: propTypes.func,  
-  largeImageURL: propTypes.string.isRequired,
-  webformatURL: propTypes.string.isRequired,
-  tags: propTypes.string.isRequired,
+  largeImageURL: PropTypes.string.isRequired,
+  webformatURL: PropTypes.string.isRequired,
+  tags: PropTypes.string.isRequired,
 };
