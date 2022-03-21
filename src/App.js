@@ -33,7 +33,6 @@ export default function App () {
       }
 
       setImages((prevImages) => [...prevImages, ...NewImages]);
-      console.log(images);
       setLoading(false);
     })
   }, [page, imageName]);
