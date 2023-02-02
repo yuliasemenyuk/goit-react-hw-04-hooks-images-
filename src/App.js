@@ -5,7 +5,6 @@ import ImageGallery from "./components/ImageGallery/ImageGallery";
 import Button from "./components/Button/Button";
 import Loader from "./components/Loader/Loader";
 import getAPI from "./services/API";
-import style from "./App.css";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function App () {
@@ -48,7 +47,7 @@ export default function App () {
     }
 
     return (
-        <div className={style.App}>
+        <div>
           <Searchbar onSubmit={handleFormSubmit} />
           {images.length > 0 && <ImageGallery images={images} />}
           {loading ? (
